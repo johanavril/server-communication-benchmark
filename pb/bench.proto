@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package bench;
+option go_package = "./pb";
+
+message Identity {
+  string username = 1;
+  string email = 2;
+  string country = 3;
+}
+
+message Location {
+  double lat = 1;
+  double lon = 2;
+}
+
+message Content {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  int64 react_count = 4;
+  int64 share_count = 5;
+  string genre = 6;
+}
+
+message ContentList {
+  repeated Content content = 1;
+}
+
+message PingRequest {
+  string ping = 1;
+}
+
+message PingResponse {
+  string pong = 1;
+};
+
+message SmallRequest {
+  Identity identity = 1;
+}
+
+message SmallResponse {
+  string summary = 1;
+};
+
+message BigRequest {
+  Identity identity = 1;
+  Location location = 2;
+  repeated string interest = 3;
+  repeated Content bookmark = 4;
+}
+
+message BigResponse {
+  string summary = 1;
+  map<string, bool> bookmarked_interest = 2;
+  map<string, ContentList> organized_bookmark = 3;
+};
+
+service BenchService {
+  rpc Ping(PingRequest) returns(PingResponse) {};
+  rpc Small(SmallRequest) returns(SmallResponse) {};
+  rpc Big(BigRequest) returns(BigResponse) {};
+}
